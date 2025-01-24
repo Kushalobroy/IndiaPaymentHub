@@ -1,0 +1,4 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js');
+/* Your custom styles go here */
+body { font-family: Arial, sans-serif; background: linear-gradient(90deg, rgba(222,233,162,1) 0%, rgba(106,226,132,1) 45%, rgba(232,255,0,1) 90%);}
