@@ -15,34 +15,12 @@ public class  UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
     public User createUser(User user) {
         return userRepository.save(user);
     }
-
-    @Override
-    public User updateUser(Long id, User user) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        existingUser.setUsername(user.getUsername());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setUserType(user.getUserType());
-        return userRepository.save(existingUser);
+    // Method to get all users
+    public List<User> getUsers() {
+        return userRepository.findAll(); // Fetches all users from the repository
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-    }
-
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
 }

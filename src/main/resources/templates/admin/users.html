@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Include the head fragment -->
+        <th:block th:replace="admin/fragments/head :: head"></th:block>
+    </head>
+    <body class="sb-nav-fixed">
+        <th:block th:replace="admin/fragments/nav :: nav"></th:block>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <th:block th:replace="admin/fragments/sidebar :: sidebar"></th:block>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h3 class="mt-4">User</h3>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard / Users</li>
+                        </ol>
+                        <div class="row">
+           
+                            <div class="col-lg-12">
+                                <!-- Success message -->
+                            <div th:if="${success}" class="alert alert-success" role="alert">
+                                <span th:text="${success}"></span>
+                            </div>
+
+                            <!-- Error message -->
+                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    Users
+                                </div>
+                                <div class="card-body">
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Address</th>
+                                                <th>User Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Address</th>
+                                                <th>User Type</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            <tr th:each="user : ${users}">
+                                                <td th:text="${user.id}"></td>
+                                                <td th:text="${user.name}"></td>
+                                                <td th:text="${user.email}"></td>
+                                                <td th:text="${user.phoneNumber}"></td>
+                                                <td th:text="${user.address}"></td>
+                                                <td th:text="${user.userType}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       
+                    </div>
+                </main>
+                <th:block th:replace="admin/fragments/footer :: footer"></th:block>
+
+            </div>
+        </div>
+        <th:block th:replace="admin/fragments/scripts :: scripts"></th:block>
+    </body>
+</html>

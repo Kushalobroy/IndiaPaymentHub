@@ -1,38 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Link to the CSS file -->
-    <link rel="stylesheet" href="/css/styles.css">
-    <title>Login</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-6">
-                <form th:action="@{/login}" th:object="${login}" method="post">
-                <div class="card px-5 py-5 shadow" id="form1">
-                    <div class="">
-                        <h5 class="text-center fw-bold">Login</h5>
-                    </div>
-                    <div class="form-data" v-if="!submitted">
-                        <div class="forms-group mb-4"> <lable>Email</lable> 
-                            <input autocomplete="off" type="text" name="email" class="form-control form-control-sm" placeholder="Email" required>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Include the head fragment -->
+        <th:block th:replace="admin/fragments/head :: head"></th:block>
+    </head>
+    <body class="sb-nav-fixed">
+        <th:block th:replace="admin/fragments/nav :: nav"></th:block>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <th:block th:replace="admin/fragments/sidebar :: sidebar"></th:block>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h3 class="mt-4">Add User</h3>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard / Add User</li>
+                        </ol>
+                        <div class="row">
+           
+                            <div class="col-lg-12">
+                                <!-- Success message -->
+                            <div th:if="${success}" class="alert alert-success" role="alert">
+                                <span th:text="${success}"></span>
+                            </div>
+
+                            <!-- Error message -->
+                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                <span th:text="${error}"></span>
+                            </div>
+                                <form th:action="@{/api/admin/add-user}" th:object="${user}" method="post">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="name" th:field="*{name}" type="text" placeholder="Enter Name" />
+                                                <label for="name">Name</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="email" th:field="*{email}" type="text" placeholder="Email" />
+                                                <label for="email">Email</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="phoneNumber" th:field="*{phoneNumber}" type="text" placeholder="Enter Phone Number" />
+                                                <label for="phoneNumber">Phone Number</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" type="date" placeholder="Date Of Birth" />
+                                                <label for="dateOfBirth">Date of Birth</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="address" th:field="*{address}" type="text" placeholder="Address" />
+                                                <label for="address">Address</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="password" th:field="*{password}" type="password" placeholder="Create a password" />
+                                                <label for="password">Password</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 mb-0 text-end">
+                                        <button class="btn btn-primary btn-block" type="submit">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         
-                        </div>
-                        <div class="forms-inputs mb-4"> 
-                            <lable>Password</lable>
-                             <input autocomplete="off" type="password" class="form-control form-control-sm" placeholder="Password" required>
-                          
-                        </div>
-                        <div class="mb-3"> <button type="submit" class="btn btn-dark w-100 btn-sm">Login</button> </div>
+                       
                     </div>
-                </div>
-            </form>
+                </main>
+                <th:block th:replace="admin/fragments/footer :: footer"></th:block>
+
             </div>
         </div>
-    </div>
-</div>
-
-</body>
-<script src="/js/script.js"></script>
+        <th:block th:replace="admin/fragments/scripts :: scripts"></th:block>
+    </body>
 </html>
