@@ -18,7 +18,7 @@ public class HomeController {
     }
     @RequestMapping("/admin/dashboard")
     public String adminDashboard() {
-        return "admin/dashboard"; 
+        return "admin/index"; 
     }
 }
 

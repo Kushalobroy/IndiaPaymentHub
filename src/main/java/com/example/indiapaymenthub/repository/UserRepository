@@ -1,0 +1,46 @@
+package com.example.indiapaymenthub.repository;
+
+import com.example.indiapaymenthub.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    // Find a user by username
+    User findByUsername(String username);
+
+    // Find all users by userType
+    List<User> findByUserType(String userType);
+
+    // Find all users whose email contains a specific domain (e.g., "gmail.com")
+    List<User> findByEmailContaining(String domain);
+
+    // Custom JPQL query to find users by partial username (case-insensitive)
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%'))")
+    List<User> findByUsernameLikeIgnoreCase(@Param("username") String username);
+
+    // Find users where the username starts with a given prefix
+    List<User> findByUsernameStartingWith(String prefix);
+
+    // Find users where the username ends with a given suffix
+    List<User> findByUsernameEndingWith(String suffix);
+
+    // Count users by userType
+    long countByUserType(String userType);
+
+    // Find users by a combination of username and userType
+    List<User> findByUsernameAndUserType(String username, String userType);
+
+    // Find users by email using native SQL
+    @Query(value = "SELECT * FROM User u WHERE u.email = :email", nativeQuery = true)
+    User findByEmailNative(@Param("email") String email);
+
+    // Check if a user exists by username
+    boolean existsByUsername(String username);
+
+    // Check if a user exists by email
+    boolean existsByEmail(String email);
+}
