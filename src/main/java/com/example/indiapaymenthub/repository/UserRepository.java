@@ -9,17 +9,12 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  
-    // Find all users by userType
     List<User> findByUserType(String userType);
 
-    // Count users by userType
     long countByUserType(String userType);
 
-    // Find users by email using native SQL
     @Query(value = "SELECT * FROM User u WHERE u.email = :email", nativeQuery = true)
     User findByEmailNative(@Param("email") String email);
-
-    // Check if a user exists by email
+    User findByEmail(String email);
     boolean existsByEmail(String email);
 }

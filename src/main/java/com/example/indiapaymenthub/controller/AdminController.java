@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
 import java.sql.Date;
@@ -20,6 +22,40 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+    
+    @PostMapping("/login")
+    public String loginUser(@RequestParam String email, 
+                            @RequestParam String password, 
+                            RedirectAttributes redirectAttributes, 
+                            HttpSession session) {
+        try {
+            // Find user by email
+            User user = userService.getUserByEmail(email);
+    
+            // Check if user exists and password matches
+            if (user != null && user.getPassword().equals(password)) {
+                // Store user details in session
+                session.setAttribute("loggedInUser", user);
+                session.setAttribute("userType", user.getUserType()); // Store user type
+    
+                redirectAttributes.addFlashAttribute("success", "Login successful!");
+    
+                // Redirect based on user role
+                if ("ADMIN".equalsIgnoreCase(user.getUserType())) {
+                    return "redirect:/admin/dashboard"; // Redirect admin
+                } else {
+                    return "redirect:/dashboard"; // Redirect regular user
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Invalid email or password.");
+                return "redirect:/login"; // Redirect back to login page on failure
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred during login.");
+            return "redirect:/login"; 
+        }
+    }
+    
 
     // Create a new user
     @PostMapping("/add-user")
