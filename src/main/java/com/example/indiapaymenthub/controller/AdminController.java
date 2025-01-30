@@ -17,46 +17,22 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/admin") // Base URL for all endpoints in this controller
+@RequestMapping("/admin") // Base URL for all endpoints in this controller
 public class AdminController {
 
     @Autowired
     private UserService userService;
     
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String email, 
-                            @RequestParam String password, 
-                            RedirectAttributes redirectAttributes, 
-                            HttpSession session) {
-        try {
-            // Find user by email
-            User user = userService.getUserByEmail(email);
-    
-            // Check if user exists and password matches
-            if (user != null && user.getPassword().equals(password)) {
-                // Store user details in session
-                session.setAttribute("loggedInUser", user);
-                session.setAttribute("userType", user.getUserType()); // Store user type
-    
-                redirectAttributes.addFlashAttribute("success", "Login successful!");
-    
-                // Redirect based on user role
-                if ("ADMIN".equalsIgnoreCase(user.getUserType())) {
-                    return "redirect:/admin/dashboard"; // Redirect admin
-                } else {
-                    return "redirect:/dashboard"; // Redirect regular user
-                }
-            } else {
-                redirectAttributes.addFlashAttribute("error", "Invalid email or password.");
-                return "redirect:/login"; // Redirect back to login page on failure
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "An error occurred during login.");
-            return "redirect:/login"; 
-        }
+    @RequestMapping("/dashboard")
+    public String adminDashboard() {
+        return "admin/index"; 
     }
-    
-
+    @RequestMapping("/addUser")
+    public String addUser(Model model) {
+        model.addAttribute("user", new User());
+        return "admin/addUser";
+    }
+  
     // Create a new user
     @PostMapping("/add-user")
     public String createUser(@RequestParam String name, 
@@ -84,6 +60,12 @@ public class AdminController {
             return "redirect:/admin/addUser"; // Return 400 Bad Request for errors
         }
     }
-
+    
+    @RequestMapping("/users")
+    public String getUsers(Model model) {
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "admin/users";
+    }
     
 }
