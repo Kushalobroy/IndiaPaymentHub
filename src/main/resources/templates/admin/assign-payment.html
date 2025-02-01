@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Include the head fragment -->
+        <th:block th:replace="admin/fragments/head :: head"></th:block>
+    </head>
+    <body class="sb-nav-fixed">
+        <th:block th:replace="admin/fragments/nav :: nav"></th:block>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <th:block th:replace="admin/fragments/sidebar :: sidebar"></th:block>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h3 class="mt-4">Assign Payment</h3>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard / Assign Payment</li>
+                        </ol>
+                        <div class="row">
+           
+                            <div class="col-lg-12">
+                                <!-- Success message -->
+                            <div th:if="${success}" class="alert alert-success" role="alert">
+                                <span th:text="${success}"></span>
+                            </div>
+
+                            <!-- Error message -->
+                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card border-top-primary mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-user me-1"></i>
+                                            User Details
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p th:text="${user.name}" class="badge bg-warning"> </p>
+                                                    <p th:text="${user.email}" class="badge bg-danger"></p>
+                                                    <p th:text="${user.phoneNumber}" class="badge bg-info"></p>
+                                                </div>
+                                            </div>     
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                        <form method="post">
+                                            <input type="hidden" id="userId" value="${user.id}" />
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3">
+                                                        <input class="form-control form-control-sm" id="amount"  type="text" placeholder="Enter Amount" />
+                                                        <label for="name">Amount</label>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3">
+                                                        <select class="form-control form-control-sm" id="gateway">
+                                                            <option value="">Select</option>
+                                                            <option value="Razorpay">Razorpay</option>
+                                                        </select>
+                                                        <label for="name">Gateway</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            
+                                            <div class="mt-4 mb-0 text-end">
+                                                <button class="btn btn-primary btn-block" type="submit">Assign</button>
+                                            </div>
+                                        </form>
+                                    
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                        
+                       
+                    </div>
+                </main>
+                <th:block th:replace="admin/fragments/footer :: footer"></th:block>
+
+            </div>
+        </div>
+        <th:block th:replace="admin/fragments/scripts :: scripts"></th:block>
+    </body>
+</html>

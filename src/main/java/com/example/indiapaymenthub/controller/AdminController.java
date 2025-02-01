@@ -15,6 +15,10 @@ import org.springframework.ui.Model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/admin") // Base URL for all endpoints in this controller
@@ -66,6 +70,18 @@ public class AdminController {
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
         return "admin/users";
+    }
+    @RequestMapping("/users-assign")
+    public String requestMethodName(Model model) {
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "admin/users-assign";
+    }
+    @RequestMapping("/assign-payment")
+    public String requestMethodName(Model model, Long userId) {
+        User user = userService.getUserById(userId);
+        model.addAttribute("user", user);
+        return "admin/assign-payment";
     }
     
 }
