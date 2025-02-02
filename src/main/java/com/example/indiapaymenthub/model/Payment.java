@@ -1,5 +1,4 @@
 package com.example.indiapaymenthub.model;
-
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -10,14 +9,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "assigned_by")
-    private User assignedBy;
-
+    private Long user_id;
+    private Long assigned_by;
     private Double amount;
     private String status; // PENDING, COMPLETED, FAILED
     private String gateway; // RAZORPAY, PAYTM, etc.
@@ -25,10 +18,6 @@ public class Payment {
     private String gatewayOrderId; // Order ID from the payment gateway
     private String gatewayPaymentId; // Payment ID after transaction
     private String gatewaySignature; // For payment verification (optional)
-
-
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
 
     public void setStatus(String status) {
         this.status = status;
@@ -38,6 +27,21 @@ public class Payment {
     }
     public double getAmount() {
         return amount;
+    }
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+    public void setGateway(String gateway) {
+        this.gateway = gateway;
+    }
+    public void setGatewayOrderId(String gatewayOrderId) {
+        this.gatewayOrderId = gatewayOrderId;
+    }
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+    public void setAssignedById(Long assigned_by) {
+        this.assigned_by = assigned_by;
     }
     // Getters and Setters
 }
