@@ -36,7 +36,7 @@ public class HomeController {
     public String loginUser(@RequestParam String email, 
                             @RequestParam String password, 
                             RedirectAttributes redirectAttributes, 
-                            HttpSession session) {
+                            HttpSession session, Model model) {
         try {
             // Find user by email
             User user = userService.getUserByEmail(email);
@@ -46,10 +46,9 @@ public class HomeController {
                 // Store user details in session
                 session.setAttribute("loggedInUser", user);
                 session.setAttribute("userType", user.getUserType()); // Store user type
-    
+                session.setAttribute("assignedById", user.getId());
                 redirectAttributes.addFlashAttribute("success", "Login successful!");
-    
-                // Redirect based on user role
+              
                 if ("ADMIN".equalsIgnoreCase(user.getUserType())) {
                     return "redirect:/admin/dashboard"; // Redirect admin
                 } else {
@@ -57,7 +56,7 @@ public class HomeController {
                 }
             } else {
                 redirectAttributes.addFlashAttribute("error", "Invalid email or password.");
-                return "redirect:/login"; // Redirect back to login page on failure
+                return "redirect:/login"; 
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred during login.");

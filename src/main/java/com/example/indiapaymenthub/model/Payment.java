@@ -9,8 +9,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long user_id;
-    private Long assigned_by;
+    private String userId;
+    private String assignedById;
+    
     private Double amount;
     private String status; // PENDING, COMPLETED, FAILED
     private String gateway; // RAZORPAY, PAYTM, etc.
@@ -21,6 +22,12 @@ public class Payment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public void setGatewayPaymentId(String paymentId) {
+        this.gatewayPaymentId = paymentId;
+    }
+    public void setGatewaySignature(String signature) {
+        this.gatewaySignature = signature;
     }
     public String getStatus() {
         return status;
@@ -37,11 +44,13 @@ public class Payment {
     public void setGatewayOrderId(String gatewayOrderId) {
         this.gatewayOrderId = gatewayOrderId;
     }
-    public void setUserId(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-    public void setAssignedById(Long assigned_by) {
-        this.assigned_by = assigned_by;
+    
+    public void setAssignedById(String assignedById) {
+        this.assignedById = assignedById;
     }
+    public String getGatewayOrderId() { return gatewayOrderId; }
     // Getters and Setters
 }

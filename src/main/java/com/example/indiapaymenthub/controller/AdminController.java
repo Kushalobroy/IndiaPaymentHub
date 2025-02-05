@@ -15,9 +15,6 @@ import org.springframework.ui.Model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -75,6 +72,7 @@ public class AdminController {
     public String requestMethodName(Model model) {
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
+
         return "admin/users-assign";
     }
     @RequestMapping("/assign-payment")

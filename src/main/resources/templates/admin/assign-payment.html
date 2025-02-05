@@ -49,19 +49,22 @@
 
                                 </div>
                                 <div class="col-md-6">
-                                        <form method="post">
-                                            <input type="hidden" id="userId" value="${user.id}" />
+                                        <form method="post" th:action="@{/admin/payments/create}" class="card border-top-primary mb-4">
+                                            <input type="hidden" id="userId" name="userId" th:value="${user.id}" />
+                                            <input type="hidden" name="assignedById" th:value="5" />
+
+
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control form-control-sm" id="amount"  type="text" placeholder="Enter Amount" />
+                                                        <input class="form-control form-control-sm" id="amount" name="amount"  type="text" placeholder="Enter Amount" />
                                                         <label for="name">Amount</label>
                                                     </div>
                                                     
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <select class="form-control form-control-sm" id="gateway">
+                                                        <select class="form-control form-control-sm" id="gateway" name="gateway">
                                                             <option value="">Select</option>
                                                             <option value="Razorpay">Razorpay</option>
                                                         </select>
