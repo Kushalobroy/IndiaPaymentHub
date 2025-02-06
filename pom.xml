@@ -73,6 +73,11 @@
         <artifactId>razorpay-java</artifactId>
         <version>1.4.8</version>
     </dependency>
+    <!-- Gmail -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
     </dependencies>
 
     <build>

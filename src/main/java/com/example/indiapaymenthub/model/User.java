@@ -53,6 +53,9 @@ public class User {
     @Column
     private LocalDateTime updatedAt; // Timestamp of last update
 
+    @Column
+    private String resetToken;  
+
     // Constructors
     public User() {}
 
@@ -154,6 +157,12 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public String getResetToken(){
+        return resetToken;
+    }
+    public void setResetToken(String resetToken){
+        this.resetToken = resetToken;
     }
 
     // Automatically set createdAt and updatedAt

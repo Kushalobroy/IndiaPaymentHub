@@ -5,18 +5,23 @@ import com.example.indiapaymenthub.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.indiapaymenthub.model.User;
-
+import com.example.indiapaymenthub.repository.*;
 import java.util.List;
+import java.util.Optional;
 @Controller
 public class HomeController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping("/")
     public String home() {
@@ -87,6 +92,33 @@ public class HomeController {
     public String forgotPassword(){
         return "forgot-password";
     }
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        userService.sendPasswordResetEmail(email);
+        redirectAttributes.addAttribute("success", "Forgot Password Mail Send Successfully !");
+        return "forgot-password";
+    }
+    @GetMapping("/reset-password")
+    public String showResetPasswordPage(@RequestParam String token, Model model) {
+        Optional<User> userOpt = userRepository.findByResetToken(token);  
+        if (userOpt.isPresent()) {
+            model.addAttribute("token", token);
+            return "reset-password"; // Redirect to reset-password.html
+        }
+        return "error";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String token, @RequestParam String newPassword, RedirectAttributes redirectAttributes) {
+        boolean success = userService.resetPassword(token, newPassword);
+        if (success) {
+            redirectAttributes.addFlashAttribute("success", "Password changed successfully!");
+            return "redirect:/login"; // Redirect to login page after success
+        } 
+        redirectAttributes.addFlashAttribute("error", "Invalid or expired token.");
+        return "redirect:/forgot-password";
+        
+    } 
 
 }
 
