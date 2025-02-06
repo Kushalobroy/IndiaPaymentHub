@@ -25,18 +25,8 @@ public class PaymentService {
         return paymentRepository.findByUserId(userId);
     }
 
-    public String processPayment(Long paymentId, Map<String, String> paymentDetails) {
-        Payment payment = paymentRepository.findById(paymentId).orElse(null);
-    
-        if (payment != null && "PENDING".equals(payment.getStatus())) {
-            // Extract payment details from the map
-            payment.setGatewayPaymentId(paymentDetails.get("gateway_payment_id"));
-            payment.setGatewaySignature(paymentDetails.get("gateway_signature"));
-            payment.setStatus(paymentDetails.get("status"));  // e.g., "COMPLETED"
-    
-            paymentRepository.save(payment);
-            return "Payment successful";
-        }
+    public String processPayment() {
+        
         return "Payment failed or already processed";
     }
     

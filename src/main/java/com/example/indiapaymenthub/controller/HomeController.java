@@ -65,16 +65,28 @@ public class HomeController {
     }
     
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); // Destroy the session
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.invalidate();
+         // Destroy the session
+        redirectAttributes.addFlashAttribute("success", "Logged Out successfully !");
         return "redirect:/login";
     }
     @GetMapping("/bad-request")
     public String badRequest() {
         return "401";
     }
-
-    
+    @GetMapping("/privacy-policy")
+    public String privacyPolicy() {
+        return "privacy-policy";
+    }
+    @GetMapping("/terms-and-conditions")
+    public String termsConditions(){
+        return "terms-conditions";
+    }  
+    @GetMapping("/forgot-password")  
+    public String forgotPassword(){
+        return "forgot-password";
+    }
 
 }
 

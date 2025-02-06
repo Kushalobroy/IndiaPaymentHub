@@ -22,7 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 @Controller
-@RequestMapping("/admin/payments")
+@RequestMapping("/payments")
 public class PaymentController {
 
     @Autowired
@@ -65,11 +65,25 @@ public class PaymentController {
     public List<Payment> getUserPayments(@PathVariable String userId) {
         return paymentService.getPaymentsByUserId(userId);
     }
-
-    @PostMapping("/process/{orderId}")
-    public String processPayment(@PathVariable Long orderId, @RequestBody Map<String, String> paymentDetails) {
-        return paymentService.processPayment(orderId, paymentDetails);
+    @PostMapping("/process/{gatewayOrderId}")
+    public ResponseEntity<String> processPayment(@PathVariable String gatewayOrderId, @RequestBody Map<String, String> paymentDetails) {
+        Payment payment = paymentRepository.findByGatewayOrderId(gatewayOrderId);
+    
+        if (payment != null && "PENDING".equals(payment.getStatus())) {
+            // Extract payment details from the map
+            payment.setGatewayPaymentId(paymentDetails.get("gateway_payment_id"));
+            payment.setGatewaySignature(paymentDetails.get("gateway_signature"));
+            payment.setStatus(paymentDetails.getOrDefault("status", "FAILED"));  // Default to "FAILED" if not provided
+    
+            // Save only if payment is found
+            paymentRepository.save(payment);
+    
+            return ResponseEntity.ok("Payment Successful!");
+        }
+    
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment not found or already processed");
     }
+    
 
 
     

@@ -14,7 +14,7 @@ public class Security implements WebMvcConfigurer, HandlerInterceptor {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this)
-                .addPathPatterns("/admin/**", "/user/**", "/login") // Protect routes + check login page
+                .addPathPatterns("/admin/**", "/user/**", "/login", "/payments/**") // Protect payments route
                 .excludePathPatterns("/logout", "/public/**"); // Allow public access
     }
 
@@ -26,17 +26,17 @@ public class Security implements WebMvcConfigurer, HandlerInterceptor {
         if (session != null && session.getAttribute("loggedInUser") != null) {
             String userType = (String) session.getAttribute("userType");
 
-            // If user is already logged in and tries to access "/login", redirect them
+            // Redirect logged-in users from "/login" to respective dashboards
             if (requestURI.equals("/login")) {
                 if ("ADMIN".equals(userType)) {
-                    response.sendRedirect("/admin/dashboard"); // Redirect admin
+                    response.sendRedirect("/admin/dashboard");
                 } else {
-                    response.sendRedirect("/user/dashboard"); // Redirect normal user
+                    response.sendRedirect("/user/dashboard");
                 }
                 return false;
             }
 
-            // Role-based access restriction
+            // Role-based access control
             if (requestURI.startsWith("/admin") && !"ADMIN".equals(userType)) {
                 response.sendRedirect("/bad-request");
                 return false;
@@ -46,9 +46,15 @@ public class Security implements WebMvcConfigurer, HandlerInterceptor {
                 response.sendRedirect("/bad-request");
                 return false;
             }
+
+            // ✅ Restrict /payments/** route to logged-in users only
+            if (requestURI.startsWith("/payments") && session.getAttribute("loggedInUser") == null) {
+                response.sendRedirect("/login");
+                return false;
+            }
         } else {
-            // If user is not logged in and tries to access admin/user pages, redirect to login
-            if (requestURI.startsWith("/admin") || requestURI.startsWith("/user")) {
+            // Redirect unauthenticated users trying to access protected routes
+            if (requestURI.startsWith("/admin") || requestURI.startsWith("/user") || requestURI.startsWith("/payments")) {
                 response.sendRedirect("/login");
                 return false;
             }
