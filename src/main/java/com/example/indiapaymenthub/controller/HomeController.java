@@ -1,20 +1,15 @@
 package com.example.indiapaymenthub.controller;
-
 import com.example.indiapaymenthub.service.UserService;
-
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.example.indiapaymenthub.model.User;
 import com.example.indiapaymenthub.repository.*;
-import java.util.List;
 import java.util.Optional;
+
 @Controller
 public class HomeController {
     @Autowired
@@ -22,6 +17,9 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @RequestMapping("/")
     public String home() {
@@ -53,8 +51,9 @@ public class HomeController {
                 session.setAttribute("userType", user.getUserType()); // Store user type
                 session.setAttribute("assignedById", user.getId());
                 redirectAttributes.addFlashAttribute("success", "Login successful!");
-              
+                
                 if ("ADMIN".equalsIgnoreCase(user.getUserType())) {
+                    
                     return "redirect:/admin/dashboard"; // Redirect admin
                 } else {
                     return "redirect:/user/dashboard"; // Redirect regular user

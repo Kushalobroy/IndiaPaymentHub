@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
-
+import com.example.indiapaymenthub.repository.*;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
@@ -24,8 +24,23 @@ public class AdminController {
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     @RequestMapping("/dashboard")
-    public String adminDashboard() {
+    public String adminDashboard(Model model) {
+        long totalAdmins = userRepository.countByUserType("ADMIN");
+        long totalUsers = userRepository.countByUserType("USER");
+        long totalPendingPaymentAmount = paymentRepository.sumAmountByStatus("PENDING");
+        long totalCompletedPaymentAmount = paymentRepository.sumAmountByStatus("COMPLETED");
+
+        model.addAttribute("totalAdmins", totalAdmins);
+        model.addAttribute("totalUsers", totalUsers);
+        model.addAttribute("totalPendingPaymentAmount", totalPendingPaymentAmount);
+        model.addAttribute("totalCompletedPaymentAmount", totalCompletedPaymentAmount);
         return "admin/index"; 
     }
     @RequestMapping("/addUser")

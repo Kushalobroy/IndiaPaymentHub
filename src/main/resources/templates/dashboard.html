@@ -115,6 +115,7 @@
 <script>
     document.querySelectorAll('.pay-btn').forEach(button => {
         button.addEventListener('click', function(e) {
+            console.log("Tap");
             e.preventDefault();
 
             const amount = this.getAttribute('data-amount');
