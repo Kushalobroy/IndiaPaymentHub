@@ -83,7 +83,7 @@
                                             <td th:text="${payment.status}"></td>
                                             <td>
                                                 <!-- Show 'Pay' button only if payment status is NOT COMPLETED -->
-                                                <button class="btn btn-primary pay-btn btn-sm"
+                                                <button class="btn btn-primary pay-btn btn-sm" type="button"
                                                     th:if="${payment.status != 'COMPLETED'}"
                                                     th:data-amount="${payment.amount}"
                                                     th:data-order-id="${payment.gatewayOrderId}"
@@ -115,7 +115,7 @@
 <script>
     document.querySelectorAll('.pay-btn').forEach(button => {
         button.addEventListener('click', function(e) {
-            console.log("Tap");
+            alert("Pay button clicked!");
             e.preventDefault();
 
             const amount = this.getAttribute('data-amount');
